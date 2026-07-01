@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 #include "include/Contact.h"
 #include "include/ContactManager.h"
 int main()
@@ -16,15 +17,61 @@ int main()
         std::cout << "6. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
+        std::cin.ignore();
         if (choice == 1)
         {
-            std ::cout <<"Enter the Name : " ;
-            std ::cout << std::endl;
-            std::cout << "Enter the PhoneNumber :"
-            std::string name, phonenumber , email;
-            std::cin >> name;
+            std ::string name ,email, phonenumber;
+            std::cout << "Adding the Contact " << std::endl;
+            std::cout << "Enter the name : ";
+            std::getline(std::cin, name);
+            std::cout << "Enter the email : ";
+            std::getline(std::cin, email);
+            std::cout << "Enter Phone number : ";
+            std::getline(std::cin, phonenumber);
+            Contact ct(name , phonenumber,email);
+            manager.addContact(ct);
+            std::cout << "Contact Added Successfullly" << std::endl;
+        }
+
+        else if (choice == 2)
+        {
+            std::string name;
+            std::cout << "Enter the name to remove contact : ";
+            std::getline(std::cin, name);
+
+            if (manager.removeContact(name))
+                std::cout  << "contact removed successfully " << std::endl;
+            else
+                std::cout << "contact not found"  << std::endl;
+        }
+        else if (choice == 3)
+        {
+            manager.listall();
+        }
+        else if (choice == 4)
+        {
+            std::string filename;
+            std::cout << "Enter the file name to save all the data :";
+            std::getline(std::cin,filename);
+            manager.savetoFile(filename);
+        }
+        else if (choice == 5)
+        {
+            std::string filename;
+            std::cout << "Enter the file name to  load the data :";
+            std::getline(std::cin,filename);
+            manager.loadFromFile(filename);
+        }
+        else if (choice == 6)
+        {
+            std::cout << "Goodbye!\n";
+        }
+        else
+        {
+            std::cout << "Invalid choice, please enter 1-6\n";
         }
     }
+
 
 
 
