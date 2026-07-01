@@ -1,14 +1,34 @@
 #include "../include/ContactManager.h"
 #include "../include/Contact.h"
 #include <iostream>
+#include <mysql/mysql.h>
 #include <fstream>
 #include <vector>
+
+// ContactManager::ContactManager()
+// {
+//     connection = mysql_init(nullptr);
+//     if (!connection)
+//     {
+//         std::cout << "Mysql Connection Failed" << std::endl;
+//         return;
+//     }
+// }
+
 void ContactManager::addContact(const Contact& contact)
 {
+    for (std::size_t i = 0; i < contacts.size(); i++)
+    {
+        if (contacts[i].getName() == contact.getName())
+        {
+            std::cout << "Contact with this name already exists.\n";
+            return;
+        }
+    }
     contacts.push_back(contact);
 }
 
-bool ContactManager::removeContact(std::string name)
+bool ContactManager::removeContact(std::string& name)
 {
     for (std::size_t i = 0;i<contacts.size();i++)
     {
@@ -23,12 +43,20 @@ bool ContactManager::removeContact(std::string name)
 
 void ContactManager::listall() const
 {
-    for (std::size_t i = 0;i<contacts.size();i++)
+    if (contacts.empty())
     {
-        std::cout << "Name         : " << contacts[i].getName() << std::endl;
-        std::cout << "Phone Number : " << contacts[i].getPhone() << std::endl;
-        std::cout << "Email        : " << contacts[i].getEmail() <<  std::endl;
-     }
+        std::cout << "No contacts found.\n";
+        return;
+    }
+
+    for (std::size_t i = 0; i < contacts.size(); i++)
+    {
+        std::cout << "\n[" << i + 1 << "] ";
+        std::cout << "Name         : " << contacts[i].getName()  << '\n';
+        std::cout << "    Phone Number : " << contacts[i].getPhone() << '\n';
+        std::cout << "    Email        : " << contacts[i].getEmail() << '\n';
+    }
+    std::cout << "\nTotal contacts: " << contacts.size() << '\n';
 }
 
 void ContactManager::savetoFile(const std::string& file_name) const
@@ -46,6 +74,7 @@ void ContactManager::savetoFile(const std::string& file_name) const
         outlet << "Email        : " << contacts[i].getEmail() << '\n';
         outlet << "--------------------------------\n";
     }
+    std::cout << "Data Successfullly Saved in the file - "<< file_name << std::endl;
 }
 
 void ContactManager::loadFromFile(const std::string& file_name)
@@ -56,7 +85,8 @@ void ContactManager::loadFromFile(const std::string& file_name)
         std::cout << "Couldn't open the file for reading" << std::endl;
         return;
     }
-    contacts.clear();std::string name;
+    contacts.clear();
+    std::string name;
     std::string phone;
     std::string email;
 
