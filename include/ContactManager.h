@@ -5,18 +5,18 @@
 #ifndef CONTACT_MANAGER_CONTACTMANAGER_H
 #define CONTACT_MANAGER_CONTACTMANAGER_H
 #include "Contact.h"
+#include <vector>
+class ContactManager{
 
-class ContactManager
-{
 private:
-    vector<Contact> &contacts;
+    std::vector<Contact> contacts;
 public:
+    ContactManager() = default;
     void addContact(const Contact& contact);
-    void removeContact(const Contact &contact);
+    bool removeContact(std::string name);
     void listall() const;
     void savetoFile(const std::string &file_name) const;
-    void loadFromFile(const std::string &file_name) const;
-
+    void loadFromFile(const std::string &file_name) ;
 };
 
 #endif //CONTACT_MANAGER_CONTACTMANAGER_H
