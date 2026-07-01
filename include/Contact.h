@@ -2,6 +2,7 @@
 #ifndef CONTACT_MANAGER_CONTACT_H
 #define CONTACT_MANAGER_CONTACT_H
 #include <string>
+
 #include <array>
 class Contact
 {
